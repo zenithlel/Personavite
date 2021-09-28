@@ -20,6 +20,7 @@ pragma soliditypp ^0.4.2;
 // creating an Attribute costs 1000 VITE, anyone can create an attribute and VITE will be stored in the contract
 // only the owner of the contract have the right to withdraw the contract holds
 // VITE stored in the answers will be given out, 1 % will be stored in the contract of course
+
 contract PersonaCreation{
     
     struct Persona{

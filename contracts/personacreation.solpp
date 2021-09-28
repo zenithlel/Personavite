@@ -1,0 +1,49 @@
+pragma soliditypp ^0.4.2;
+
+// This contract creats a persona that is ownable to an owner, only the owner of the persona can use the persona to enter challenges 
+//each persona will have only one name, the name will be reserved to the persona and can't be used by someone else
+// the default star rating will be 0, owner can upgrade the persona rate by entering challenges that are created by funders
+// a funder funds a challenge, creates answers for the challenge
+// a challenge is giving a correct answer to the cquestion givin by the funder
+// if the challenger get the correct answer, the persona gets a higher rate, it gets one point. 
+// after getting total of 5 points, the points reset to 0.. and the star rating raises to 1 
+// the Persona can be sold as an NFT and the owner of the persona can change 
+// the attribute can only be 1 
+// for example attribute "Blockchain" will be only about the challenges of blockchain
+// let's give it deeperthought, the creator of VITE wants to make challenges VITE knowledge, he will be funding the challenge
+// the challenge will have a code 
+// for now I only have the time to make the most basic approach to this idea. and  i barely have time to make its frontend which I don't think possible
+// 8***************************************************************************
+//--*--*-*-*-*-* 
+// However, There must be at least an explorer or a channel that announces the existence of a challenge and where the attribute holder can get into the challenge
+// there will be a limit on creating personas. A user who have already created a persona with an attribute can only wait another 2 days 
+// creating an Attribute costs 1000 VITE, anyone can create an attribute and VITE will be stored in the contract
+// only the owner of the contract have the right to withdraw the contract holds
+// VITE stored in the answers will be given out, 1 % will be stored in the contract of course
+contract PersonaCreation{
+    
+    struct Persona{
+        string name;
+        string attribute;
+        uint256 age;
+        uint256 updated;
+        uint256 challengeMaster;
+        
+    }
+    Persona[] public personas;
+    mapping(address => uint256) public personacount;
+    mapping(uint256 => address) public personaOwner;
+    mapping(address => uint256) public personalpersona;
+    event Created(address indexed addr,string name, string attribute, string log);
+
+    onMessage createPersona(string calldata name, string calldata attribute){
+        require(personacount[msg.sender] <1, "Can only make one per address for now");
+        uint256 id = personas.push(Persona(name,attribute, 0, 0, 0)) - 1;
+        emit Created(msg.sender, name, attribute, "Successfully Created!");
+        personaOwner[id] = msg.sender;
+        personacount[msg.sender]++;
+        personalpersona[msg.sender] = id;
+    }
+
+
+}
